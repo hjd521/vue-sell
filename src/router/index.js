@@ -3,9 +3,9 @@
  */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import goods from '../components/goods/goods.vue';
-import seller from '../components/seller/seller.vue';
-import rating from  '../components/rating/rating.vue';
+import goods from 'components/goods/goods.vue';
+import seller from 'components/seller/seller.vue';
+import rating from  'components/rating/rating.vue';
 Vue.use(VueRouter);
 const routers = [
   {

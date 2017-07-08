@@ -24,16 +24,29 @@
 </template>
 
 <script>
-  import vHeader from './components/header/header.vue';
+  import vHeader from 'components/header/header.vue';
+  import api from './fetch/api.js';
   export default {
+    data() {
+      return {
+        seller: []
+      }
+    },
     components: {
       vHeader
     },
-    name: 'app'
+    name: 'app',
+    created(){
+      api.getGoods().then((res) => {
+        this.seller = res.data;
+        console.log(this.seller);
+      });
+    }
   }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../src/common/stylus/mixin.styl"
   /*vue-loader会自动处理display：flex的兼容问题*/
   #app
     .tab
@@ -41,8 +54,18 @@
       width: 100%
       height: 40px
       line-height: 40px
+      /*解决一像素的问题*/
+      border-1px(rgba(7, 17, 27, 0.1))
       .tab-item
         flex: 1
         text-align: center
+        & > a
+          display: block
+          text-decoration: none
+          font-size: 14px
+          color: rgb(77, 85, 93)
+          &.active
+            color rgb(2240, 20, 20)
+
 
 </style>
