@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="header">
-      <v-header></v-header>
+      <v-header :seller="seller"></v-header>
     </div>
     <div class="tab">
       <div class="tab-item">
@@ -29,7 +29,7 @@
   export default {
     data() {
       return {
-        seller: []
+        seller: {}
       }
     },
     components: {
@@ -37,9 +37,11 @@
     },
     name: 'app',
     created(){
-      api.getGoods().then((res) => {
+      api.getSeller().then((res) => {
         this.seller = res.data;
         console.log(this.seller);
+      }).catch((err) => {
+        console.error(err);
       });
     }
   }
