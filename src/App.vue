@@ -4,10 +4,19 @@
       <v-header></v-header>
     </div>
     <div class="tab">
-      <div class="tab-item">商品</div>
-      <div class="tab-item">评论</div>
-      <div class="tab-item">商家</div>
+      <div class="tab-item">
+        <router-link :to="{path:'/goods'}">商品</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link :to="{path:'/rating'}">评论</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link :to="{path:'/seller'}">商家</router-link>
+      </div>
     </div>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <div class="content">
       I am content
     </div>
@@ -15,7 +24,7 @@
 </template>
 
 <script>
-  import vHeader from './components/header/header.vue'
+  import vHeader from './components/header/header.vue';
   export default {
     components: {
       vHeader
