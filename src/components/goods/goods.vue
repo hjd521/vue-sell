@@ -2,7 +2,8 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="(item,index) in goods" class="menu-item" :class="{'current':currentIndex===index}">
+        <li v-for="(item,index) in goods" @click="selMenu(index,$event)" class="menu-item"
+            :class="{'current':currentIndex===index}">
           <span v-show='item.type>0' class="icon" :class="classMap[item.type]"></span><span class="text border-1px"
                                                                                             v-text="item.name">
           </span>
@@ -70,10 +71,17 @@
         this.listHeight.push(height);
         for (let i = 0; i < foodList.length; i++) {
           let item = foodList[i];
-          debugger;
           height += item.clientHeight;
           this.listHeight.push(height);
         }
+      },
+      selMenu(index, event){
+        if (!event._constructed) {
+          return;
+        }
+        let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
+        let el = foodList[index];
+        this.foodScroll.scrollToElement(el, 500);
       }
     },
     computed: {
@@ -127,7 +135,7 @@
         display table
         height 54px
         width 56px
-        line-height 54px
+        line-height 14px
         &.current
           position relative
           margin-top -1px
@@ -136,10 +144,10 @@
           font-weight 700
         .icon
           display inline-block
-            width: 16px
-            height: 16px
+            width: 12px
+            height: 12px
             vertical-align top
-            margin-right 5px
+            margin-right 2px
             background-size 16px
             background-repeat: no-repeat
             &.decrease
