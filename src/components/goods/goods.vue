@@ -36,11 +36,15 @@
         </li>
       </ul>
     </div>
+    <div class="shop-wrapper">
+      <shop :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shop>
+    </div>
   </div>
 </template>
 
 <script>
   import BScroll from 'better-scroll';
+  import shop from 'components/shop/shop'
   import api from '@/fetch/api.js';
   export default {
     data(){
@@ -50,8 +54,10 @@
         scrollY: 0,
         foodScroll: null
       }
-    }
-    ,
+    },
+    components: {
+      shop
+    },
     methods: {
       _initScroll(){
         let _this = this
