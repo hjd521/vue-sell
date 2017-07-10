@@ -18,7 +18,6 @@
       <router-view></router-view>
     </keep-alive>
     <div class="content">
-      I am content
     </div>
   </div>
 </template>

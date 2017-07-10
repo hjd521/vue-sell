@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper" v-el:menu-wrapper>
+    <div class="menu-wrapper" ref="menuWrapper">
       <ul>
         <li v-for="item in goods" class="menu-item">
           <span v-show='item.type>0' class="icon" :class="classMap[item.type]"></span><span class="text border-1px"
@@ -9,7 +9,7 @@
         </li>
       </ul>
     </div>
-    <div class="foods-wrapper" v-el:foods-wrapper>
+    <div class="foods-wrapper" ref="foodsWrapper">
       <ul>
         <li v-for="item in goods" class="food-list">
           <h1 class="title" v-text="item.name"></h1>
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+  import BScroll from 'better-scroll';
   import api from '@/fetch/api.js';
   export default {
     data(){
@@ -49,8 +50,12 @@
     ,
     methods: {
       _initScroll(){
-        this.menuScroll = new BScroll(this.$els.menuWrapper, {});
-        this._foodScroll = new BScroll(this.$els.foodWrapper, {});
+        this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+          click: true
+        });
+        this._foodScroll = new BScroll(this.$refs.foodsWrapper, {
+          click: true
+        });
       }
     }
     ,
@@ -60,12 +65,12 @@
       }
     }
     ,
-    created()
-    {
+    created(){
       api.getGoods().then((res) => {
         this.goods = res.data;
-        console.log(this.goods);
-        this._initScroll()
+        this.$nextTick(() => {
+          this._initScroll();
+        })
       }).catch((err) => {
         console.error(err);
       });
