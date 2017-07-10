@@ -39,7 +39,6 @@
     created(){
       api.getSeller().then((res) => {
         this.seller = res.data;
-        console.log(this.seller);
       }).catch((err) => {
         console.error(err);
       });

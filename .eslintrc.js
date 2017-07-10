@@ -30,6 +30,8 @@ module.exports = {
     'no-multi-spaces': 0,
     "space-before-blocks": 0,
     "space-before-function-paren": 0,
-    'padded-blocks': 0
+    'padded-blocks': 0,
+    'brace-style': 0,
+    'comma-style': 0
   }
 };
