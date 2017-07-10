@@ -2,7 +2,7 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="item in goods" class="menu-item">
+        <li v-for="(item,index) in goods" class="menu-item" :class="{'current':currentIndex===index}">
           <span v-show='item.type>0' class="icon" :class="classMap[item.type]"></span><span class="text border-1px"
                                                                                             v-text="item.name">
           </span>
@@ -11,7 +11,7 @@
     </div>
     <div class="foods-wrapper" ref="foodsWrapper">
       <ul>
-        <li v-for="item in goods" class="food-list">
+        <li v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title" v-text="item.name"></h1>
           <ul>
             <li v-for="food in item.foods" class="food-item border-1px">
@@ -44,21 +44,50 @@
   export default {
     data(){
       return {
-        goods: []
+        goods: [],
+        listHeight: [],
+        scrollY: 0,
+        foodScroll: null
       }
     }
     ,
     methods: {
       _initScroll(){
-        this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+        let _this = this
+        _this.menuScroll = new BScroll(_this.$refs.menuWrapper, {
           click: true
         });
-        this._foodScroll = new BScroll(this.$refs.foodsWrapper, {
-          click: true
+        _this.foodScroll = new BScroll(_this.$refs.foodsWrapper, {
+          probeType: 3
         });
+        _this.foodScroll.on('scroll', (pos) => {
+          _this.scrollY = Math.abs(Math.round(pos.y));
+        })
+      },
+      getHeight(){
+        let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
+        let height = 0;
+        this.listHeight.push(height);
+        for (let i = 0; i < foodList.length; i++) {
+          let item = foodList[i];
+          debugger;
+          height += item.clientHeight;
+          this.listHeight.push(height);
+        }
       }
-    }
-    ,
+    },
+    computed: {
+      currentIndex(){
+        for (let i = 0; i < this.listHeight.length; i++) {
+          let heightNow = this.listHeight[i];
+          let heightNext = this.listHeight[i + 1];
+          if (!heightNext || (this.scrollY >= heightNow && this.scrollY < heightNext)) {
+            return i
+          }
+        }
+        return 0;
+      }
+    },
     props: {
       seller: {
         type: Object
@@ -70,6 +99,7 @@
         this.goods = res.data;
         this.$nextTick(() => {
           this._initScroll();
+          this.getHeight();
         })
       }).catch((err) => {
         console.error(err);
@@ -98,6 +128,12 @@
         height 54px
         width 56px
         line-height 54px
+        &.current
+          position relative
+          margin-top -1px
+          z-index 10
+          background-color: #fff
+          font-weight 700
         .icon
           display inline-block
             width: 16px
