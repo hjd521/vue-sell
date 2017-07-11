@@ -8,12 +8,14 @@
           </div>
         </div>
         <div class="price">
-          12元
+          ￥12元
         </div>
         <div class="desc" v-text="'另需配送费'+deliveryPrice+'元'"></div>
-        div
       </div>
       <div class="content-right">
+        <div class="pay">
+          ￥{{minPrice}}起送
+        </div>
       </div>
     </div>
   </div>
@@ -41,10 +43,11 @@
     left 0
     bottom 0
     z-index: 50
-    width: 50%
+    width: 100%
     height 48px
     .content
       display flex
+      background #141d27
       font-size 0
       .content-left
         flex 1
@@ -53,7 +56,7 @@
           position relative
           top -10px
           margin 0 12px
-          padding 16px
+          padding 6px
           width: 56px
           height: 56px
           box-sizing border-box
@@ -64,8 +67,10 @@
             width 100%
             height 100%
             border-radius 50%
-            background-color #2b343c
+            text-align center
+            background #2b343c
             .icon-shopping_cart
+              line-height 44px
               font-size 24px
               text-align center
               color #80858a
@@ -77,17 +82,25 @@
           margin-top 12px
           box-sizing border-box
           padding-right 12px
-          border-width 1px solid rgba(255, 255, 255, 0.1)
+          border-righ 1px solid rgba(255, 255, 255, 0.1)
           font-size 16px
           font-weight 700px
+          color: #fff
         .desc
           display inline-block
           margin 12px 0 0 12px
           line-height 24px
           font-size 10px
-          font-weight 400
           color rgba(255, 255, 255, 0.4)
       .content-right
         flex 0 0 105px
         width 105px
+        .pay
+          height 48px
+          line-height 48px
+          text-align center
+          font-size 12px
+          font-weight 700
+          color rgba(255, 255, 255, 0.4)
+
 </style>
