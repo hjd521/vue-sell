@@ -3,18 +3,18 @@
     <div class="content">
       <div class="content-left">
         <div class="logo-wrapper">
-          <div class="logo">
-            <span class="icon-shopping_cart"></span>
+          <div class="logo" :class="{'highLight':totalCount>0}">
+            <span class="icon-shopping_cart" :class="{'highLight':totalCount>0}"></span>
           </div>
+          <div class="num" v-show="totalCount>0">{{totalCount}}</div>
         </div>
-        <div class="price" v-text="totalPrice">
-
+        <div class="price" :class="{'highLight':totalPrice>0}" v-text="totalPrice">
         </div>
         <div class="desc" v-text="'另需配送费'+deliveryPrice+'元'"></div>
       </div>
       <div class="content-right">
-        <div class="pay">
-          ￥{{minPrice}}起送
+        <div class="pay" :class="payClass">
+          {{payDesc}}
         </div>
       </div>
     </div>
@@ -48,6 +48,31 @@
           total += item.price * item.count;
         });
         return total;
+      },
+      totalCount () {
+        let count = 0;
+        this.selFoods.forEach((item) => {
+          count += item.item.count;
+        })
+        return count;
+      },
+      payDesc () {
+        if (this.totalPrice === 0) {
+          return `￥${this.minPrice}元起送`;
+        }
+        else if (this.totalPrice < this.minPrice) {
+          let def = this.minPrice - this.totalPrice;
+          return `还差￥${def}元起送`;
+        } else {
+          return '去结算';
+        }
+      },
+      payClass () {
+        if (this.totalPrice < this.minPrice){
+          return 'not-enough';
+        } else {
+          return 'enough';
+        }
       }
     }
   }
@@ -85,12 +110,29 @@
             border-radius 50%
             text-align center
             background #2b343c
+            &.highLight
+              background-color: rgb(0,160,200)
             .icon-shopping_cart
               line-height 44px
               font-size 24px
               text-align center
               color #80858a
-
+              &.highLight
+                color #ffffff
+          .num
+            position absolute
+            top 0
+            right 0
+            width 24px
+            height 16px
+            line-height 16px
+            text-align center
+            border-radius 16px
+            font-size 9px
+            font-weight 400
+            color #ffffff
+            background-color: rgb(240, 20, 20)
+            box-shadow 0 4px 8px 0 rgba(0,0,0,0.4)
         .price
           display inline-block
           vertical-align top
@@ -102,6 +144,8 @@
           font-size 16px
           font-weight 700px
           color: #fff
+          &.highLight
+            color #ffffff
         .desc
           display inline-block
           margin 12px 0 0 12px
@@ -118,5 +162,9 @@
           font-size 12px
           font-weight 700
           color rgba(255, 255, 255, 0.4)
-
+          &.not-enough
+            background-color: #2b333b
+          &.enough
+            background-color: #00b43c
+            color:#ffffff;
 </style>
