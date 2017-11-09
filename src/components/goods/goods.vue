@@ -31,7 +31,7 @@
                   <span class="now" v-text="food.price+'元'"></span>
                   <span class="old" v-show='food.oldPrice' v-text="food.oldPrice+'元'"></span>
                 </div>
-                <div class="cart-control-wrapper">
+                <div class="cart-control-wrapper" v-on:addEvent="getPos">
                   <cart-control :food="food">
                   </cart-control>
                 </div>
@@ -96,6 +96,9 @@
         let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
         let el = foodList[index];
         this.foodScroll.scrollToElement(el, 500);
+      },
+      getPos(e){
+        console.log(e.target)
       }
     },
     computed: {

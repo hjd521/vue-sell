@@ -1,6 +1,6 @@
 <template>
   <div class="shop-cart">
-    <div class="content">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highLight':totalCount>0}">
@@ -18,12 +18,73 @@
         </div>
       </div>
     </div>
+    <!--<div class="ball-wrapper">-->
+      <!--<transition name="bass-drop">-->
+        <!--<div class="ball" v-for="(item,index) in balls" v-show="item.show">-->
+          <!--<div class="inner"></div>-->
+        <!--</div>-->
+      <!--</transition>-->
+    <!--</div>-->
+    <div class="shop-list" v-show="listShow">
+      <div class="list-header">
+        <h1 class="title">购物车</h1>
+        <span class="empty">清空</span>
+      </div>
+
+      <transition name="toTop">
+        <div class="list-content">
+          <ul>
+            <li class="food" v-for="food in selectFoods">
+              <span class="name">{{food.name}}</span>
+              <div class="price">
+                <span>￥{{food.price*food.count}}</span>
+              </div>
+              <div class="cart-control-wrapper">
+                <cart-control></cart-control>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </transition>
+
+    </div>
   </div>
 </template>
-
 <script>
+  import cartControl from 'components/carControl/carControl'
   export default {
     name: '',
+    data () {
+      return {
+        balls: [
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+          {
+            show: false
+          }
+        ],
+        fold: true
+      }
+    },
+    methods: {
+      toggleList () {
+        if (!this.totalCount) {
+          return;
+        } else {
+          this.fold = !this.fold;
+        }
+      }
+    },
     props: {
       selFoods: {
         type: Array,
@@ -73,12 +134,25 @@
         } else {
           return 'enough';
         }
+      },
+      listShow () {
+        if (!this.totalCount) {
+          this.fold = true;
+          return false;
+        } else {
+          let show = !this.fold;
+          return show;
+        }
       }
+    },
+    components: {
+      cartControl
     }
   }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl"
   .shop-cart
     position fixed
     left 0
@@ -167,4 +241,71 @@
           &.enough
             background-color: #00b43c
             color:#ffffff;
+    .ball-wrapper
+      .ball
+        position fixed
+        left 32px
+        bottom 22px
+        z-index 200
+        .inner
+          width 16px
+          height 16px
+          border-radius 50%
+          background-color: rgb(0,160,220)
+
+    .toTop-enter-active, .toTop-leave-active
+      transition all .5s
+    .toTop-enter
+      transform translate3D(0,-100,0)
+      opacity 0
+    .toTop-leave
+      transform translate3D(0,0,0)
+      opacity -1
+    .shop-list
+      position absolute
+      left 0
+      top 0
+      z-index -1
+      width 100%
+      .list-header
+        height 40px
+        line-height 40px
+        padding 0 18px
+        background-color: #f3f5f7
+        border-bottom 1px solid rgba(7,17,27,0.1)
+        .title
+          float left
+          font-size 14px
+          color rgb(7,17,27)
+        .empty
+          float right
+          font-size 12px
+          color rgb(0,100,80)
+      .list-content
+        padding 0 18px
+        max-height 217px
+        overflow hidden
+        background-color #fff
+        .food
+          position relative
+          padding 12px 0
+          box-sizing border-box
+          border-1px(rgba(7, 17, 27, 0.1))
+          .name
+            line-height 24px
+            font-size 14px
+            color rgb(7,17,27)
+          .price
+            position absolute
+            right 90px
+            bottom 12px
+            line-height 24px
+            font-size 14px
+            font-weight 700
+            color rgb(240,20,20)
+          .cart-control-wrapper
+            position absolute
+            right 0
+            bottom 6px
+
 </style>
