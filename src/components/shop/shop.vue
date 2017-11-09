@@ -52,7 +52,7 @@
       totalCount () {
         let count = 0;
         this.selFoods.forEach((item) => {
-          count += item.item.count;
+          count += item.count;
         })
         return count;
       },

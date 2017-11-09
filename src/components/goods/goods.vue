@@ -31,6 +31,10 @@
                   <span class="now" v-text="food.price+'元'"></span>
                   <span class="old" v-show='food.oldPrice' v-text="food.oldPrice+'元'"></span>
                 </div>
+                <div class="cart-control-wrapper">
+                  <cart-control :food="food">
+                  </cart-control>
+                </div>
               </div>
             </li>
           </ul>
@@ -38,7 +42,7 @@
       </ul>
     </div>
     <div class="shop-wrapper">
-      <shop :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shop>
+      <shop :selFoods="selFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shop>
     </div>
   </div>
 </template>
@@ -47,6 +51,7 @@
   import BScroll from 'better-scroll';
   import shop from 'components/shop/shop'
   import api from '@/fetch/api.js';
+  import cartControl from 'components/carControl/carControl'
   export default {
     data(){
       return {
@@ -57,7 +62,8 @@
       }
     },
     components: {
-      shop
+      shop,
+      cartControl
     },
     methods: {
       _initScroll(){
@@ -66,6 +72,7 @@
           click: true
         });
         _this.foodScroll = new BScroll(_this.$refs.foodsWrapper, {
+          click: true,
           probeType: 3
         });
         _this.foodScroll.on('scroll', (pos) => {
@@ -101,6 +108,17 @@
           }
         }
         return 0;
+      },
+      selFoods () {
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count){
+              foods.push(food);
+            }
+          })
+        })
+        return foods
       }
     },
     props: {
@@ -224,4 +242,9 @@
               text-decoration line-through
               font-size 10px
               color rgb(147, 153, 159)
+          .cart-control-wrapper {
+            position absolute
+            right 0
+            bottom 12px
+          }
 </style>
