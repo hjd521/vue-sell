@@ -30,23 +30,19 @@
         <h1 class="title">购物车</h1>
         <span class="empty">清空</span>
       </div>
-
-      <transition name="toTop">
         <div class="list-content">
           <ul>
-            <li class="food" v-for="food in selectFoods">
+            <li class="food" v-for="food in selFoods">
               <span class="name">{{food.name}}</span>
               <div class="price">
                 <span>￥{{food.price*food.count}}</span>
               </div>
               <div class="cart-control-wrapper">
-                <cart-control></cart-control>
+                <cart-control :food="food"></cart-control>
               </div>
             </li>
           </ul>
         </div>
-      </transition>
-
     </div>
   </div>
 </template>
@@ -85,6 +81,7 @@
         }
       }
     },
+
     props: {
       selFoods: {
         type: Array,
@@ -109,6 +106,7 @@
           total += item.price * item.count;
         });
         return total;
+
       },
       totalCount () {
         let count = 0;
@@ -264,7 +262,7 @@
     .shop-list
       position absolute
       left 0
-      top 0
+      bottom  45px
       z-index -1
       width 100%
       .list-header
@@ -306,6 +304,7 @@
           .cart-control-wrapper
             position absolute
             right 0
+            font-size 16px
             bottom 6px
 
 </style>

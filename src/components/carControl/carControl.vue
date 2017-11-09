@@ -34,7 +34,6 @@
         } else {
           this.food.count ++;
         }
-        this.$emit('addEvent', e)
       },
       decreaseCart (e) {
         if (!e._constructed){
