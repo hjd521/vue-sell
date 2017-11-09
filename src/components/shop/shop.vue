@@ -28,9 +28,9 @@
     <div class="shop-list" v-show="listShow">
       <div class="list-header">
         <h1 class="title">购物车</h1>
-        <span class="empty">清空</span>
+        <span class="empty" @click="emptyCar">清空</span>
       </div>
-        <div class="list-content">
+        <div class="list-content" ref="list">
           <ul>
             <li class="food" v-for="food in selFoods">
               <span class="name">{{food.name}}</span>
@@ -47,7 +47,8 @@
   </div>
 </template>
 <script>
-  import cartControl from 'components/carControl/carControl'
+  import cartControl from 'components/carControl/carControl';
+  import BScroll from 'better-scroll';
   export default {
     name: '',
     data () {
@@ -79,6 +80,11 @@
         } else {
           this.fold = !this.fold;
         }
+      },
+      emptyCar () {
+        this.selFoods.forEach((food) => {
+          food.count = 0;
+        })
       }
     },
 
@@ -137,10 +143,21 @@
         if (!this.totalCount) {
           this.fold = true;
           return false;
-        } else {
-          let show = !this.fold;
-          return show;
         }
+        let show = !this.fold;
+        if (show) {
+          if (!this.scroll){
+            this.$nextTick(() => {
+              this.scroll = new BScroll(this.$refs.list, {
+                click: true
+              })
+            })
+          }
+          else {
+            this.scroll.refresh();
+          }
+        }
+        return show
       }
     },
     components: {

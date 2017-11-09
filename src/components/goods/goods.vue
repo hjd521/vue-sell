@@ -16,7 +16,7 @@
         <li v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title" v-text="item.name"></h1>
           <ul>
-            <li v-for="food in item.foods" class="food-item border-1px">
+            <li v-for="food in item.foods" @click="foodDetail(food)" class="food-item border-1px">
               <div class="icon">
                 <img :src="food.icon" alt="">
               </div>
@@ -31,7 +31,7 @@
                   <span class="now" v-text="food.price+'元'"></span>
                   <span class="old" v-show='food.oldPrice' v-text="food.oldPrice+'元'"></span>
                 </div>
-                <div class="cart-control-wrapper" v-on:addEvent="getPos">
+                <div class="cart-control-wrapper">
                   <cart-control :food="food">
                   </cart-control>
                 </div>
@@ -44,6 +44,7 @@
     <div class="shop-wrapper">
       <shop :selFoods="selFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shop>
     </div>
+    <food-detail v-show="selected" ref="fooddetail" :food="selected"></food-detail>
   </div>
 </template>
 
@@ -52,18 +53,21 @@
   import shop from 'components/shop/shop'
   import api from '@/fetch/api.js';
   import cartControl from 'components/carControl/carControl'
+  import foodDetail from 'components/foodDetail/foodDetail'
   export default {
     data(){
       return {
         goods: [],
         listHeight: [],
         scrollY: 0,
-        foodScroll: null
+        foodScroll: null,
+        selected: null
       }
     },
     components: {
       shop,
-      cartControl
+      cartControl,
+      foodDetail
     },
     methods: {
       _initScroll(){
@@ -97,8 +101,13 @@
         let el = foodList[index];
         this.foodScroll.scrollToElement(el, 500);
       },
-      getPos(e){
-        console.log(e.target)
+      foodDetail(food) {
+        if (!event._constructed) {
+          return;
+        }
+        this.selected = food;
+        this.$refs.fooddetail.show();
+
       }
     },
     computed: {
