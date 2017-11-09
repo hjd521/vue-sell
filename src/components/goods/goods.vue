@@ -3,9 +3,10 @@
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
         <li v-for="(item,index) in goods" @click="selMenu(index,$event)" class="menu-item"
-            :class="{'current':currentIndex===index}">
-          <span v-show='item.type>0' class="icon" :class="classMap[item.type]"></span><span class="text border-1px"
-                                                                                            v-text="item.name">
+            :class="{current:currentIndex===index}">
+          <span class="text border-1px">
+             <span v-show='item.type>0' class="icon" :class="classMap[item.type]"></span>
+          {{item.name}}
           </span>
         </li>
       </ul>
@@ -60,7 +61,7 @@
     },
     methods: {
       _initScroll(){
-        let _this = this
+        let _this = this;
         _this.menuScroll = new BScroll(_this.$refs.menuWrapper, {
           click: true
         });
@@ -106,15 +107,14 @@
       seller: {
         type: Object
       }
-    }
-    ,
+    },
     created(){
       api.getGoods().then((res) => {
         this.goods = res.data;
         this.$nextTick(() => {
           this._initScroll();
-          this.getHeight();
-        })
+          this.getHeight()
+        });
       }).catch((err) => {
         console.error(err);
       });
@@ -137,10 +137,11 @@
       width 80px
       background #f3f5f7
       .menu-item
-        padding 0 12px
+        padding 5px 12px
         display table
         height 54px
         width 56px
+        font-size
         line-height 14px
         &.current
           position relative
@@ -150,28 +151,29 @@
           font-weight 700
         .icon
           display inline-block
-            width: 12px
-            height: 12px
-            vertical-align top
-            margin-right 2px
-            background-size 16px
-            background-repeat: no-repeat
-            &.decrease
-              bg-image('decrease_3')
-            &.discount
-              bg-image('discount_3')
-            &.guarantee
-              bg-image('guarantee_3')
-            &.invoice
-              bg-image('invoice_3')
-            &.special
-              bg-image('special_3')
-
+          width: 12px
+          height: 12px
+          vertical-align top
+          margin-right 2px
+          background-size 12px 12px
+          background-repeat: no-repeat
+          &.decrease
+            bg-image('decrease_3')
+          &.discount
+            bg-image('discount_3')
+          &.guarantee
+            bg-image('guarantee_3')
+          &.invoice
+            bg-image('invoice_3')
+          &.special
+            bg-image('special_3')
         .text
+          display table-cell
           font-size 12px
           width 56px
           vertical-align middle
           font-size 12px
+          text-align center
           border-1px(7, 17, 27, 0.1)
     .foods-wrapper
       flex 1

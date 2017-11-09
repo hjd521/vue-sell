@@ -7,8 +7,8 @@
             <span class="icon-shopping_cart"></span>
           </div>
         </div>
-        <div class="price">
-          ￥12元
+        <div class="price" v-text="totalPrice">
+
         </div>
         <div class="desc" v-text="'另需配送费'+deliveryPrice+'元'"></div>
       </div>
@@ -25,6 +25,12 @@
   export default {
     name: '',
     props: {
+      selFoods: {
+        type: Array,
+        default(){
+          return [];
+        }
+      },
       deliveryPrice: {
         type: Number,
         default: 0
@@ -32,6 +38,16 @@
       minPrice: {
         type: Number,
         default: 0
+      }
+    },
+    computed: {
+      // shop price
+      totalPrice(){
+        let total = 0;
+        this.selFoods.forEach((item) => {
+          total += item.price * item.count;
+        });
+        return total;
       }
     }
   }

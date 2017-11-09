@@ -32,6 +32,7 @@ module.exports = {
     "space-before-function-paren": 0,
     'padded-blocks': 0,
     'brace-style': 0,
-    'comma-style': 0
+    'comma-style': 0,
+    'spaced-comment': 0
   }
 };
