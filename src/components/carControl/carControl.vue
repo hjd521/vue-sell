@@ -17,7 +17,6 @@
   export default {
     name: '',
     created () {
-      console.log(this.food)
     },
     props: {
       food: {
@@ -26,6 +25,7 @@
     },
     methods: {
       addCart (e) {
+        e.stopPropagation();
         if (!e._constructed){
           return
         } // 阻止pc端触发两次
@@ -36,6 +36,7 @@
         }
       },
       decreaseCart (e) {
+        e.stopPropagation();
         if (!e._constructed){
           return;
         } // 阻止pc端触发两次

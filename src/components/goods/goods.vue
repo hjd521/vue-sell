@@ -2,7 +2,7 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="(item,index) in goods" @click="selMenu(index,$event)" class="menu-item"
+        <li v-for="(item,index) in goods" @click.stop="selMenu(index,$event)" class="menu-item"
             :class="{current:currentIndex===index}">
           <span class="text border-1px">
              <span v-show='item.type>0' class="icon" :class="classMap[item.type]"></span>
@@ -44,7 +44,7 @@
     <div class="shop-wrapper">
       <shop :selFoods="selFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shop>
     </div>
-    <food-detail v-show="selected" ref="fooddetail" :food="selected"></food-detail>
+    <food-detail v-show="showDetail" ref="fooddetail" :food="selected"></food-detail>
   </div>
 </template>
 
@@ -61,7 +61,10 @@
         listHeight: [],
         scrollY: 0,
         foodScroll: null,
-        selected: null
+        selected: {},
+        showDetail: false,
+        ddToken: null,
+        jsTicket: null
       }
     },
     components: {
@@ -106,6 +109,7 @@
           return;
         }
         this.selected = food;
+        this.showDetail = true;
         this.$refs.fooddetail.show();
 
       }
@@ -149,6 +153,35 @@
         console.error(err);
       });
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+//    api.getToken().then((res) => {
+//      this.ddToken = JSON.parse(res.msg);
+//      console.log('token：' + this.ddToken)
+//    })
+//      api.getJsTicket().then((res) => {
+//        this.jsTicket = JSON.parse(res.msg)
+//        console.log('jsTicket:' + this.jsTicket)
+//      })
+//      setTimeout(function(){
+//        window.dd.config({
+//          agentId: '151137888', // 必填，微应用ID
+//          corpId: 'ding917d92bf629e32ef35c2f4657eb6378f', // 必填，企业ID
+//          timeStamp: new Date().getTime(), // 必填，生成签名的时间戳
+//          nonceStr: this.ddToken, // 必填，生成签名的随机串
+//          signature: this.jsTicket, // 必填，签名
+//          type: 0, // 选填。0表示微应用的jsapi,1表示服务窗的jsapi。不填默认为0。该参数从dingtalk.js的0.8.3版本开始支持
+//          jsApiList: [ 'runtime.info', 'biz.contact.choose',
+//            'device.notification.confirm', 'device.notification.alert',
+//            'device.notification.prompt', 'biz.ding.post',
+//            'biz.util.openLink' ] // 必填，需要使用的jsapi列表，注意：不要带dd。
+//        });
+//      }, 2000)
+//
+//      window.dd.ready(function() {
+//      alert('dd调用成功')
+//    })
+//      window.dd.error(function(err){
+//        alert('dd error: ' + JSON.stringify(err));
+//      });
     }
   }
 </script>
